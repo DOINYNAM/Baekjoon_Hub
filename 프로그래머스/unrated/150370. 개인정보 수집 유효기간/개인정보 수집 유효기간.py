@@ -23,23 +23,25 @@ def solution(today, terms, privacies):
             
         if t_y > p_y:
             result.append(i+1)
-            # print("case1")
-            # print("t_y, p_y:", t_y, p_y)
-            # print(result)
         
         elif t_y == p_y and t_m > p_m:
             result.append(i+1)
-            # print("case2")
-            # print("t_y, p_y:", t_y, p_y)
-            # print("t_m, p_m:", t_m, p_m)
-            # print(result)
         
         elif t_y == p_y and t_m == p_m and t_d >= p_d:
             result.append(i+1)
-            # print("case3")
-            # print("t_y, p_y:", t_y, p_y)
-            # print("t_m, p_m:", t_m, p_m)
-            # print("t_d, p_d:", t_d, p_d)
-            # print(result)
         
     return result
+
+# another
+def to_days(date):
+    year, month, day = map(int, date.split("."))
+    return year * 28 * 12 + month * 28 + day
+
+def solution(today, terms, privacies):
+    months = {v[0]: int(v[2:]) * 28 for v in terms}
+    today = to_days(today)
+    expire = [
+        i + 1 for i, privacy in enumerate(privacies)
+        if to_days(privacy[:-2]) + months[privacy[-1]] <= today
+    ]
+    return expire
