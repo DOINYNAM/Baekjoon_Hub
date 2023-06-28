@@ -16,3 +16,7 @@ def solution(k, m, score):
             m_cnt -= 1
 
     return result
+
+# another
+def solution(k, m, score):
+    return sum(sorted(score)[len(score)%m::m])*m
