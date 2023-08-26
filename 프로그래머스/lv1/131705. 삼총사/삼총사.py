@@ -1,6 +1,6 @@
-def solution(number):
-    from itertools import combinations
+from itertools import combinations
 
+def solution(number):
     answer = 0
     
     for n in combinations(number, 3):
