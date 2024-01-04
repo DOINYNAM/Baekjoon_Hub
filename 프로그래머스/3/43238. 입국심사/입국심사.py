@@ -6,13 +6,7 @@ def solution(n, times):
 
     while start <= end:
         mid = (start + end) // 2
-        checked = 0 # checked는 모든 심사관들이 mid분 동안 심사한 사람의 수
-
-        for time in times:
-            checked += mid // time 
-            # 모든 심사관을 거치지 않아도 mid분 동안 n명 이상의 심사를 할 수 있다면 반복문을 나간다.
-            if checked >= n:
-                break
+        checked = sum(mid // time for time in times) # checked는 모든 심사관들이 mid분 동안 심사한 사람의 수
         
         # 심사한 사람의 수가 심사 받아야할 사람의 수(n)보다 적은 경우
         if checked < n:
