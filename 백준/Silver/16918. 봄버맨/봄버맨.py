@@ -1,47 +1,51 @@
+# 16918, 봄버맨
+import sys
 from collections import deque
-from sys import stdin
-input = stdin.readline
-dy = [-1, 1, 0, 0]
-dx = [0, 0, -1, 1]
 
-def bfs():
-    while queue:
-        y, x = queue.popleft()
-        graph[y][x] = '.'
-        for l in range(4):
-            yy = dy[l] + y
-            xx = dx[l] + x
-            if 0 <= xx < c and 0 <= yy < r and graph[yy][xx] == 'O':
-                graph[yy][xx] = '.'
-                # queue.append((yy, xx)) 연쇄반응이 없다.
 
-def search(): # 폭탄의 위치 큐에 추가
-    for i in range(r):
-        for j in range(c):
-            if graph[i][j] == 'O':
-                queue.append((i, j))
+def loc_bombs():    # 폭탄 위치 찾아 bombs deque에 저장
+    for i in range(R):
+        for j in range(C):
+            if board[i][j] == 'O':
+                bombs.append((i, j))
 
-def bombSet(): # '.' -> 'O'으로 셋팅
-    for i in range(r):
-        for j in range(c):
-            if graph[i][j] == '.':
-                graph[i][j] = 'O'
 
-r, c, n = map(int, input().split())
-graph = []
-for _ in range(r):
-    graph.append(list(input().strip()))
-n=n-1
+def make_bombs():   # 모든 자리에 폭탄 설치
+    for i in range(R):
+        for j in range(C):
+            if board[i][j] == '.':
+                board[i][j] = 'O'
 
-while n:
-    queue = deque()
-    search()
-    bombSet()
-    n -= 1
-    if n == 0:
+
+def explode():      # bombs deque에 들어있는 좌표로 폭탄 터트림
+    while bombs:
+        r, c = bombs.popleft()
+        board[r][c] = '.'
+        if 0 <= r - 1:
+            board[r - 1][c] = '.'
+        if r + 1 < R:
+            board[r + 1][c] = '.'
+        if 0 <= c - 1:
+            board[r][c - 1] = '.'
+        if c + 1 < C:
+            board[r][c + 1] = '.'
+
+
+R, C, N = map(int, sys.stdin.readline().split())
+board = [list(sys.stdin.readline().rstrip()) for _ in range(R)]
+
+N -= 1  # 1초 동안 아무것도 하지 않는다
+while N:
+    bombs = deque()
+    loc_bombs()
+    make_bombs()
+    N -= 1
+    if N == 0:
         break
-    bfs()
-    n -= 1
+    explode()
+    N -= 1
 
-for g in graph:
-    print(*g, sep='')
+for i in range(len(board)):
+    for j in range(len(board[0])):
+        print(board[i][j], end='')
+    print()
