@@ -1,4 +1,6 @@
+# 백준 1025 제곱수 찾기
 import sys
+input = sys.stdin.readline
 
 # 입력 받기
 N, M = map(int, input().split())  # 격자의 크기
